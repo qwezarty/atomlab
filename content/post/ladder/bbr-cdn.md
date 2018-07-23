@@ -1,5 +1,7 @@
 ---
 title: "博客系统构建（三）：BBR+CDN"
+tags: ["code"]
+categories: ["博客系统构建"]
 date: 2018-07-23T15:58:03+08:00
 draft: false
 ---

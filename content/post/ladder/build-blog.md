@@ -1,5 +1,7 @@
 ---
 title: "博客系统构建（一）：Hugo+Caddy"
+tags: ["code"]
+categories: ["博客系统构建"]
 date: 2018-07-23T13:32:57+08:00
 draft: false
 ---

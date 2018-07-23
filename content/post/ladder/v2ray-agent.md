@@ -1,5 +1,7 @@
 ---
 title: "博客系统构建（二）：V2ray"
+tags: ["code"]
+categories: ["博客系统构建"]
 date: 2018-07-23T15:56:43+08:00
 draft: false
 ---
