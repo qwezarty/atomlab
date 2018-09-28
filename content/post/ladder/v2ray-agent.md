@@ -12,7 +12,6 @@ draft: false
 
 * Project V + websocket + tls
 * 利用caddy开放某个路由，通过websocket将流量转发到V2ray中
-* cloudflare提供的免费cdn加速，隐藏真实ip地址
 
 ### 在开始之前，请确保
 
