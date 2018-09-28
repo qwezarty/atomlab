@@ -64,6 +64,7 @@ bash <(curl -L -s https://install.direct/go.sh)
 ```
 
 补充说明：
+
 * your_port，请填写你的端口号，后续会用caddy将流量分发到此端口号上
 * your_id，这是一个UUID，安装完毕后会自动生成，你也可以用[UUID Generator](https://www.uuidgenerator.net/)生成一个新的
 * your_path，填写一个相对路由地址（e.g. /proxy, /ws, etc），caddy会捕捉这个路由地址的流量，转发到V中
