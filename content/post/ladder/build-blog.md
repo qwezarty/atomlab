@@ -125,6 +125,7 @@ root /var/www/atomlab/public
 ```
 
 以下是补充说明：
+
 * 域名和tls的拥有者邮箱请改成自己的（会用这个邮箱申请证书）
 * root目录要指向到站点生成下的public文件夹
 
