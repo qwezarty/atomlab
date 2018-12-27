@@ -2,14 +2,17 @@
 title: SSH免密码登陆到远程服务器
 tags: ["code"]
 date: 2018-12-25T09:47:22+08:00
+lastmod: 2018-12-27T10:36:22+08:00
 draft: false
 ---
 
 ## 引言
 
 如果你刚接触GNU/Linux，那么在连接远端服务器的时候一定被这些问题困扰着：
+
 - 服务器的IP地址记不住，每次都要掏出小本子看一下，还要多看几眼看看输地对不对
 - 密码过长难以输对，或者密码太过简单容易被碰撞攻击
+
 不过幸好，前辈们在设计SSH的时候，就已经帮我们考虑到了这个问题。
 
 ## 文章内容
@@ -46,7 +49,7 @@ ssh-keygen -t rsa -b 2048
 ## 将共钥传输给远端服务器
 
 ``` bash
-# id@sever 是你的用户名和服务器地址喔
+# id@server 是你的用户名和服务器地址喔
 ssh-copy-id id@server
 # 按规定输入服务器密码后，成功的话能看到终端输出
 # Number of key(s) added:        1
@@ -59,7 +62,7 @@ ssh-copy-id id@server
 
 ``` bash
 # 将别名写到.bashrc中，'ssh_alias'可以替换成任何你想要的名称
-echo 'ssh_alias' >> ~/.bashrc
+echo "ssh_alias='ssh id@server'" >> ~/.bashrc
 # 应用更改
 source ~/.bashrc
 # 另外如果重启终端后失效，那么说明.bash_profile没有调用.bashrc，需要加入再执行以下命令
