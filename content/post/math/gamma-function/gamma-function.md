@@ -2,7 +2,7 @@
 title: 从广义二项式定理到Gamma函数
 tags: ["math"]
 date: 2019-01-14T18:20:42+08:00
-lastmod: 2019-01-14T18:20:42+08:00
+lastmod: 2019-01-18T16:19:42+08:00
 draft: false
 ---
 
