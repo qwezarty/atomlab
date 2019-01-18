@@ -3,7 +3,7 @@ title: 从广义二项式定理到Gamma函数
 tags: ["math"]
 date: 2019-01-14T18:20:42+08:00
 lastmod: 2019-01-14T18:20:42+08:00
-draft: true
+draft: false
 ---
 
 ## 引言
@@ -126,3 +126,4 @@ $$\label{gamma} \begin{equation} \displaystyle \Gamma(x) = \Pi(x-1) = \int_0^\in
 面对未知，我们应当去问为什么。这也是我学习的方法论：选择看似困难一些的道路，别被经验所束缚。
 
 希望这篇文章能够帮助到同样拥有好奇心的你。最后，共勉。
+
