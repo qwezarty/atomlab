@@ -111,7 +111,7 @@ chmod 0770 /etc/ssl/caddy
 mkdir /var/log/caddy
 touch /var/log/caddy/access.log
 chown -R www-data:root /var/log/caddy
-chmod 0666 /var/log/access.log
+chmod 0666 /var/log/caddy/access.log
 ```
 
 ### 编写Caddyfile配置文件
