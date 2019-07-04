@@ -144,6 +144,15 @@ systemctl start caddy
 systemctl status caddy -l
 ```
 
+这里需要注意一下，若是Debian9，你需要做一些额外的工作才能让caddy顺利绑定443端口！
+
+```bash
+# 安装 libcap
+apt install -y libcap2-bin
+# set capability
+setcap CAP_NET_BIND_SERVICE=+eip $(which caddy)
+```
+
 ## 写在最后
 
 到这里，应该能够通过你的域名访问到博客了！下一篇的内容是搭建V2Ray！
