@@ -11,7 +11,7 @@ menu: "main"
 
 * 小时候的理想是成为一名大发明家，大学误入歧途学了土木工程。
 
-* 现在的理想是成为一名优秀的理论物理学家，报考了浙江大学的物理系，前途未卜。
+* 现在就读于浙江大学物理系，先定个小目标，发一篇PRL。
 
 * 深受开源思想毒化，注重分享，热爱程序设计，一天不写代码浑身难受。
 
@@ -29,14 +29,15 @@ menu: "main"
 
 * 最后，我希望世界和平。
 
-
 ## 我的项目
+
+* [zoo-demo](https://github.com/qwezarty/zoo-demo)：一个自己实现的轻量的go web framework，用于快速开发。
+
+* [zju-news-alerts](https://github.com/qwezarty/zju-news-alerts)：意图搭建浙江大学所有子站的新闻推送服务，能够实时将新闻抓取后通过邮件发送给订阅人，目前该项目开发中。
 
 * [wow-addon-manager](https://github.com/qwezarty/wow-addon-manager)：为魔兽世界写的命令行插件管理器。支持从curse搜索、安装、更新插件。
 
 * [sunny-bay](https://github.com/qwezarty/sunny-bay)：本和基友合作的民宿预定项目，现已流产。界面设计以及前端代码均已完成。
-
-* 非开源项目做过很多，曾为某气象互联网公司写过一套快速开发框架，口说无凭不再例举。
 
 ## 文章许可
 
