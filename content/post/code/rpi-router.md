@@ -5,7 +5,7 @@ categories: ["树莓派"]
 date: 2019-09-10T19:19:35+08:00
 lastmod: 2019-09-10T19:19:35+08:00
 author: "qwezarty"
-draft: true
+draft: false
 ---
 
 ## 简介
