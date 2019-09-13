@@ -1,5 +1,5 @@
 ---
-title: "浙江大学校内有线网和树莓派路由器"
+title: "浙江大学有线网和树莓派路由器（一）"
 tags: ["code"]
 categories: ["树莓派"]
 date: 2019-09-10T19:19:35+08:00
@@ -27,7 +27,7 @@ draft: false
 ```bash
 # 更新软件包列表
 apt update
-# 安装xl2tpd
+# 安装xl3tpd
 apt install xl2tpd -y
 ```
 
@@ -142,14 +142,14 @@ route add –net default gw $VPN_GW metric 1 dev ppp0
 
 ```conf
 interface=wlan0
-dhcp-range=192.168.0.11,192.168.0.30,255.255.255.0,24h
+dhcp-range=192.168.11.10,192.168.11.30,255.255.255.0,24h
 ```
 
 /etc/dhcpcd.conf
 
 ```conf
 interface wlan0
-static ip_address=192.168.0.10/24
+static ip_address=192.168.11.1/24
 ```
 
 /etc/hostapd/hostapd.conf
