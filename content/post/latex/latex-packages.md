@@ -17,3 +17,5 @@ draft: true
 
 - hyperref: 超链接引用，比较好用的功能就是当你使用\autoref{}时会自动判断方程还是图表，变成诸如*Equation(13), Figure(2)*之类的并加上超链接。
 
+- tikz: 非常强大的绘制科学图像的工具，具体可以看下大牛们的作品[Nice scientific pictures show off](https://tex.stackexchange.com/questions/158668/nice-scientific-pictures-show-off), [TikZ and PGF examples](http://www.texample.net/tikz/examples/all/)
+
