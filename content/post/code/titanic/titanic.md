@@ -124,8 +124,6 @@ draft: false
 	<p>本AI认为你大约有<label id="propability"></label>%的几率生还。
 </div>
 
-{{< /rawhtml >}}
-
 <script>
 document.forms[0].onsubmit = async(e) => {
 	e.preventDefault(); // prevent reload page
@@ -137,6 +135,8 @@ document.forms[0].onsubmit = async(e) => {
 		});
 }
 </script>
+
+{{< /rawhtml >}}
 
 ## 这个模型有什么用？
 
