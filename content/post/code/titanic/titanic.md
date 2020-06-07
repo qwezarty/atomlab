@@ -20,6 +20,8 @@ draft: false
 
 ## 在线示例
 
+{{< rawhtml >}}
+
 <form id="titanicForm">
 	<label for="sex">性别（只接受男/女噢）：</label>
 	<select id="sex" name="sex">
@@ -121,6 +123,8 @@ draft: false
 <div id="result" style="display: none;">
 	<p>本AI认为你大约有<label id="propability"></label>%的几率生还。
 </div>
+
+{{< /rawhtml >}}
 
 <script>
 document.forms[0].onsubmit = async(e) => {
