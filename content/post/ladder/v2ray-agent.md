@@ -12,6 +12,8 @@ draft: false
 
 * Project V + websocket + tls
 * 利用caddy开放某个路由，通过websocket将流量转发到V2ray中
+* 文章已经在第一版（2018）的基础上经过多次修订，现在配置更为简单（2020）
+* 归档部分若无特殊需要请跳过，在未来我会移除它（暂时保留以供有些同学升级时作为参考）
 
 ### 在开始之前，请确保
 
@@ -19,7 +21,7 @@ draft: false
 * 有基本的Linux系统知识
 * 能够使用vim/nano/emacs编辑文件
 * 更新软件包和列表，到最新版本
-* 文章中的命令均略去了sudo，若出现命令执行权限不够，你懂的
+* 文章中的部分命令略去了sudo
 
 ## Project V
 
@@ -27,13 +29,15 @@ draft: false
 
 [Project V](https://www.v2ray.com/)是一款用Go语言编写的新兴的网络分发、代理、混淆的自由软件。相比较老前辈SS，其配置更加丰富，能够利用它实现的功能会更加多，而对websocket/http2协议的支持，让它的穿透和抗检测能力大幅提高。
 
+*注：本文的内容基本没有大幅度改动，另外据说现在SS被查的很严（2020）*
+
 ### 安装V
 
 ``` bash
 # 首先安装依赖库
-apt install unzip daemon
+sudo apt install unzip daemon
 # 利用官方脚本安装
-bash <(curl -L -s https://install.direct/go.sh)
+curl -Ls https://install.direct/go.sh | sudo bash
 ```
 
 ### 配置V
@@ -71,10 +75,10 @@ bash <(curl -L -s https://install.direct/go.sh)
 ### 开机自启动
 
 ``` bash
-systemctl enable v2ray
-systemctl restart v2ray
+sudo systemctl enable v2ray
+sudo systemctl restart v2ray
 # 查看运行情况
-systemctl status v2ray -l
+sudo systemctl status v2ray -l
 ```
 
 ## Caddy
@@ -86,28 +90,47 @@ systemctl status v2ray -l
 以下是修改完成后的Caddyfile
 
 ```
-your_domain
-gzip
-tls your_email
-log /var/log/caddy/access.log
-root /var/www/atomlab/public
-proxy your_path localhost:your_port {
-    websocket
-    header_upstream -Origin
-}
+atomlab.org
+tls xxxxx@mail.com
+encode gzip # 相比v1发生了变化
+log # 相比v1不再需要指定日志位置
+root * /var/www/atomlab/public # 相比v1你需要增加一个*
+file_server # 你需要指定以上目录，将caddy作为一个静态伺服器
+
+# v2中你不再需要指定协议，caddy会自动升级成websocket
+reverse_proxy your_path localhost:your_port 
 ```
 
 ### 重启Caddy服务
 
 ``` bash
-systemctl restart caddy
+sudo systemctl restart caddy
 # 查看运行状态
-systemctl status caddy -l
+sudo systemctl status caddy -l
 ```
 
 ## 写在最后
 
 至此，服务端已经配置完毕，客户端的配置不再赘述了，挨个选项填写即可。
 
-注：客户端的端口号要使用443，同时要启用tls，填写path，加密选择auto即可。
+*注：客户端的端口号要使用443，同时要启用tls并且选择websocket传输（重要），填写path，加密选择auto或者none即可（选择none，是因为我们走的是websocket+tls，数据已经被加密过了，不需要客户端再进行额外加密）。*
 
+---
+---
+---
+
+> ## 归档：Caddy v1 配置文件
+> 
+> 以下是修改完成后的Caddyfile（Caddy v1）
+> 
+> ```
+> your_domain
+> gzip
+> tls your_email
+> log /var/log/caddy/access.log
+> root /var/www/atomlab/public
+> proxy your_path localhost:your_port {
+>     websocket
+>     header_upstream -Origin
+> }
+> ```
