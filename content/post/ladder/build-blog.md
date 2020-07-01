@@ -1,7 +1,7 @@
 ---
-title: "博客系统构建（一）：Hugo+Caddy"
+title: "博客搭建指南（一）：静态内容"
 tags: ["code"]
-categories: ["博客系统构建"]
+categories: ["博客搭建指南"]
 date: 2018-07-23T13:32:57+08:00
 draft: false
 author: "qwezarty"

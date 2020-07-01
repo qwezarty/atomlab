@@ -1,7 +1,7 @@
 ---
-title: "博客系统构建（二）：V2ray"
+title: "博客搭建指南（二）：代理服务器"
 tags: ["code"]
-categories: ["博客系统构建"]
+categories: ["博客搭建指南"]
 date: 2018-07-23T15:56:43+08:00
 draft: false
 ---

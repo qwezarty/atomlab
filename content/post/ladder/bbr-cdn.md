@@ -1,7 +1,7 @@
 ---
-title: "博客系统构建（三）：BBR+CDN"
+title: "博客搭建指南（三）：镜像加速"
 tags: ["code"]
-categories: ["博客系统构建"]
+categories: ["博客搭建指南"]
 date: 2018-07-23T15:58:03+08:00
 draft: false
 ---
