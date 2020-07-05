@@ -38,6 +38,8 @@ draft: false
 sudo apt install unzip daemon
 # 利用官方脚本安装
 curl -Ls https://install.direct/go.sh | sudo bash
+# 或使用apt安装（你可以试试看看软件包列表里有没有）
+# sudo apt install v2ray
 ```
 
 ### 配置V
@@ -68,7 +70,7 @@ curl -Ls https://install.direct/go.sh | sudo bash
 
 补充说明：
 
-* your_port，请填写你的端口号，后续会用caddy将流量分发到此端口号上
+* your_port，请填写你的端口号，后续会用caddy将流量分发到此端口号上，比如3333选个你觉得舒服的，但不能填写被占用的端口（1000之前的数字）
 * your_id，这是一个UUID，安装完毕后会自动生成，你也可以用[UUID Generator](https://www.uuidgenerator.net/)生成一个新的
 * your_path，填写一个相对路由地址（e.g. /proxy, /ws, etc），caddy会捕捉这个路由地址的流量，转发到V中
 
@@ -111,7 +113,12 @@ sudo systemctl status caddy -l
 
 ## 写在最后
 
-至此，服务端已经配置完毕，客户端的配置不再赘述了，挨个选项填写即可。
+至此，服务端已经配置完毕，客户端的配置不再赘述了，如果是GUI的话挨个选项填写即可。关于客户端的选择，官方其实给出了许多[神一样的工具](https://www.v2ray.com/awesome/tools.html)，但可能被墙了你打不开，这里根据平台推荐几个我在用的。
+
+* macOS: v2rayu，使用 homebrew cask 安装即可
+* ubuntu/arch/other-linux: qv2ray, 使用对应的包管理器即可（ubuntu要用snap）
+* ios/ipad: quantumult，需要美区ID才能购买下载，网上有如何注册美区ID的教程（但估计有些不好使了），在amazon上购买itunes充值卡即可购买
+* android/windows: 我不用所以我不太清楚，你可以戳一下官方给出的工具们看看有哪些
 
 *注：客户端的端口号要使用443，同时要启用tls并且选择websocket传输（重要），填写path，加密选择auto或者none即可（选择none，是因为我们走的是websocket+tls，数据已经被加密过了，不需要客户端再进行额外加密）。*
 
