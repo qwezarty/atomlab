@@ -29,42 +29,80 @@ draft: false
 
 [Project V](https://www.v2ray.com/)是一款用Go语言编写的新兴的网络分发、代理、混淆的自由软件。相比较老前辈SS，其配置更加丰富，能够利用它实现的功能会更加多，而对websocket/http2协议的支持，让它的穿透和抗检测能力大幅提高。
 
-*注：本文的内容基本没有大幅度改动，另外据说现在SS被查的很严（2020）*
+*注1：本文的内容基本没有大幅度改动，另外据说现在SS被查的很严（2020）*  
+*注2：安装和更新自 Aug 2020 起，有略微变化，你可以在这里找到更多的信息 [fhs-install-v2ray](https://github.com/v2fly/fhs-install-v2ray)*
 
 ### 安装V
 
 ``` bash
 # 首先安装依赖库
-sudo apt install unzip daemon
-# 利用官方脚本安装
-curl -Ls https://install.direct/go.sh | sudo bash
+sudo apt update
+sudo apt install curl unzip daemon
+# 老版本安装方式（弃用）：curl -Ls https://install.direct/go.sh | sudo bash
+# 下载安装脚本
+curl -O https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh
+curl -O https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-dat-release.sh
+# 安裝和更新 V2Ray
+bash install-release.sh
+# 安裝最新的 geoip.dat 和 geosite.dat
+bash install-dat-release.sh
 # 或使用apt安装（你可以试试看看软件包列表里有没有）
 # sudo apt install v2ray
 ```
 
+*注3: 若是从旧版本升级，迁移配置文件等你需要参考 [Migrate from the old script](https://github.com/v2fly/fhs-install-v2ray/wiki/Migrate-from-the-old-script-to-this)*
+
 ### 配置V
 
-仅需要更改/etc/v2ray/config.json中，inbound对应的值
+仅需要将 /usr/local/etc/v2ray/config.json 更改为以下内容：
 
 ``` json
-"inbound": {
-    "port": your_port,
+{
+  "log": {
+    "access": "/var/log/v2ray/access.log",
+    "error": "/var/log/v2ray/error.log",
+    "loglevel": "warning"
+  },
+  "inbound": {
+    "port": "your_port",
     "protocol": "vmess",
     "settings": {
-        "clients": [
-            {
-                "id": "your_id",
-                "level": 1,
-                "alterId": 64
-            }
-        ]
+      "clients": [
+        {
+          "id": "your_id",
+          "level": 1,
+          "alterId": 64
+        }
+      ]
     },
     "streamSettings": {
-        "network": "ws",
-        "wsSettings": {
-            "path": "your_path"
-        }
+      "network": "ws",
+      "wsSettings": {
+        "path": "your_path"
+      }
     }
+  },
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "block"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "block",
+        "protocol": ["bittorrent"]
+      }
+    ]
+  }
 }
 ```
 
