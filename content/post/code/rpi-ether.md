@@ -4,7 +4,6 @@ tags: ["code"]
 categories: ["树莓派"]
 date: 2019-09-13T21:21:13+08:00
 lastmod: 2019-09-13T21:21:13+08:00
-author: "qwezarty"
 draft: false
 ---
 

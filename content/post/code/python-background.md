@@ -3,7 +3,6 @@ title: "如何优雅地让Python程序在后台运行"
 tags: ["code", "python"]
 date: 2019-08-21T11:50:32+08:00
 lastmod: 2019-08-21T11:50:32+08:00
-author: "qwezarty"
 draft: false
 ---
 

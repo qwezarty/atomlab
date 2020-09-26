@@ -4,7 +4,6 @@ tags: ["code"]
 categories: ["博客搭建指南"]
 date: 2020-07-01T10:57:57+08:00
 draft: false
-author: "qwezarty"
 ---
 
 ## 简介

@@ -3,7 +3,6 @@ title: "Notes of python interface to pythia, the event generator, on macOS"
 tags: ["physics"]
 date: 2020-05-08T23:19:12+08:00
 lastmod: 2020-05-09T20:10:12+08:00
-author: "qwezarty"
 draft: false
 ---
 

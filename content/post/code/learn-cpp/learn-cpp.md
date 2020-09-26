@@ -3,7 +3,6 @@ title: "如何在两周内学会C++并构建优质的项目"
 tags: ["code"]
 date: 2020-09-20T21:14:57+08:00
 draft: false
-author: "qwezarty"
 ---
 
 ## 简介

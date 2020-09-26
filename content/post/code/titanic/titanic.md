@@ -3,7 +3,6 @@ title: "从泰坦尼克号谈到浅层神经网络"
 tags: ["code", "machine-learning"]
 date: 2020-06-04T15:39:13+08:00
 lastmod: 2020-06-07T16:13:11+08:00
-author: "qwezarty"
 draft: false
 ---
 

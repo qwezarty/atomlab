@@ -3,7 +3,6 @@ title: "latex中好用的宏包们"
 tags: ["latex"]
 date: 2020-01-06T19:33:12+08:00
 lastmod: 2020-01-06T19:33:12+08:00
-author: "qwezarty"
 draft: true
 ---
 

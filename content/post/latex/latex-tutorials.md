@@ -3,7 +3,6 @@ title: "献给科研工作者的latex新手指南"
 tags: ["latex"]
 date: 2020-01-06T19:45:12+08:00
 lastmod: 2020-01-06T19:45:12+08:00
-author: "qwezarty"
 draft: true
 ---
 
@@ -33,7 +32,7 @@ latex是一种需要编译的标记语言，比较简单的结构如下。
 \usepackage{mathtools} % beautify amsmath
 
 \title{A First Look to Latex}
-\author{qwezarty}
+\author{Bruce Yip}
 
 \begin{document} % main content inside
 \maketitle % required, making title

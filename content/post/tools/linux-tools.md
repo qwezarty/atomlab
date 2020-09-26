@@ -3,7 +3,6 @@ title: "linux常用工具和软件"
 tags: ["linux"]
 date: 2019-07-04T14:54:57+08:00
 lastmod: 2019-07-04T14:54:57+08:00
-author: "qwezarty"
 draft: false
 ---
 
