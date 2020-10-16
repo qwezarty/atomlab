@@ -13,23 +13,21 @@ menu: "main"
 
 * 现在就读于浙江大学物理系，定了个小目标，先发一篇PRL。
 
-* 深受开源思想毒化，热爱程序设计，毕竟撸代码使我快乐。
+* 深受开源思想毒化，热爱程序设计，撸代码使我快乐。
 
-* 对于机器人女朋友有执念，一起来造个女朋友吧！
+* 对于机器人女朋友有执念，如果找不到对象我就和马斯克一起去火星。
 
 * 核向主机游戏玩家，暴雪游戏脑残粉（以前是），咖啡重度爱好者。
 
-* 不喜欢狗血电视剧和大部分电影，你们说的xx明星和新闻我真的不知道。
-
 * 另外我喜欢晒太阳，逛西湖，思考进化的终极意义。
 
-* 最后，我希望世界和平。
+* 最后，我希望世界和平，请让2020年快点过去。
 
 ## 我的项目
 
 * [zoo-demo](https://github.com/qwezarty/zoo-demo)：一个自己实现的轻量的go web framework，用于快速开发。
 
-* [zju-news-alerts](https://github.com/qwezarty/zju-news-alerts)：意图搭建浙江大学所有子站的新闻推送服务，能够实时将新闻抓取后通过邮件发送给订阅人，目前该项目开发中。
+* [zju-news-alerts](https://github.com/qwezarty/zju-news-alerts)：意图搭建浙江大学所有子站的新闻推送服务，能够实时将新闻抓取后通过邮件发送给订阅人，没人用就不更新了。
 
 * [wow-addon-manager](https://github.com/qwezarty/wow-addon-manager)：为魔兽世界写的命令行插件管理器。支持从curse搜索、安装、更新插件。
 
