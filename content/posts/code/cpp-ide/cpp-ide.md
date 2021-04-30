@@ -159,6 +159,13 @@ playground
 └─── curve.pdf
 ```
 
+大概讲一下这几个文件的作用：
+
+- *c_cpp_properties.json* 这个文件主要是用来配置代码补全与智能提示的，一般而言你只需要配置 *include path* 即可。
+- *tasks.json* 这个文件主要是当你点击VSCode左侧的运行按钮时，其实也是需要编译的，它掌管着编译所需要提供的参数路径等。
+	1. 第一是库的 *include path*，e.g. *-I/path_of_include*
+	2. 第二是库的 *lib path*，e.g. *-L/path_of_lib*
+	3. 第三是告诉 *linker*，e.g. *-lpythia8*
 
 ## Sec. 2 NVim
 
