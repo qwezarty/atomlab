@@ -1,7 +1,7 @@
 ---
-title: "将VSCode或NVim作为C++的开发工具"
+title: "使用VSCode或NVim来编写C++（附LXPLUS代码提示配置）"
 tags: ["code"]
-date: 2021-04-28T20:57:57+08:00
+date: 2022-09-20T13:57:57+08:00
 draft: false
 ---
 
@@ -9,7 +9,7 @@ draft: false
 
 ## 简介
 
-最近C++代码越写越多，也有不少同学问我这种炫酷的C++代码提示是怎么在Mac上实现的。我自己日常会使用NVim来作为主力编辑器，而使用VSCode来进行断点调试和提交Git Commits。我会以MacOS系统为例配置这两种方案，大家根据自己需求，选择其中一种即可（推荐VSCode）
+最近C++代码越写越多，也有不少同学问我这种炫酷的C++代码提示是怎么在Mac上实现的。2022年了现在我日常会使用VSCode来作为主力编辑器（包括断点调试和提交Git Commits），NVim则用于终端编辑代码（例如远程连接到CERN的服务器）。我会以MacOS系统为例配置这两种方案，大家根据自己需求，选择其中一种即可，个人推荐VSCode.
 
 ## Sec. 1 VSCode
 
@@ -23,7 +23,7 @@ draft: false
             "includePath": [
                 "${default}",
                 "${workspaceFolder}"
-                "/usr/local/opt/root/include/root",
+                "/usr/local/opt/root/include/root", // change path to your root include path
             ],
             "compilerPath": "/usr/bin/g++",
             "cppStandard": "gnu++17",
@@ -34,7 +34,12 @@ draft: false
 }
 ```
 
-所有你需要进行智能提示的库，你都要写到 *"includePath"* 中，例如在上面的例子我添加了root库的inlude路径。另外你可能需要更改 *"compilerPath"* ，你可以在终端里输入 *which g++* 来看到g++的路径。然后让我们来测试一下它是否能够工作，新建一个 *main.cc* 文件，如下：
+其中 *includePath* 和 *compilerPath* 是值得注意的。
+
+1. 当你引用了一些第三方库或者头文件，你都要写到 *"includePath"* 中，例如在上面的例子我添加了root库的inlude路径（如果你不知道它的路径，可以使用 *root-config --incdir* 找到）。
+2. 你可能需要更改 *"compilerPath"* ，你可以在终端里输入 *which g++* 来看到g++的路径。
+
+现在让我们来测试一下它是否能正常工作，在 *playground* 文件夹下新建一个 *main.cc* 文件，你应该能正常使用代码补全与智能提示了（如果不行请返回到上一步，也欢迎通过邮箱联系我！），内容如下：
 
 ```c++
 #include <TFile.h>
@@ -65,16 +70,19 @@ int main() {
 }
 ```
 
-其实你在编写上面这段代码的时候，已经能够使用代码补全与智能提示了。编写完成以后，你可以手动使用g++来编译并且运行它。
+编写完成以后，使用g++来编译并且运行它，编译过的程序相比使用root运行能够极大地提升运行速度（这个结论是已经实验室的同学验证）
 
 ```bash
-# compile main program
+# compile main program, you may need change to -std=c++14
+# based on your platform and gcc version
 g++ -std=c++17 main.cc -o main.o `root-config --cflags --libs`
 # run it!
 ./main.o
 ```
 
-那么现在我们已经把root的开发环境搭建好了，大部分简单的数据分析都可以通过新建 *mainxx.cc* 并且手动编译运行的方法来做，你也完全可以自己在这个基础上集成更多的第三方库（e.g. Pythia8, FastJet, etc.)。接下来我们要实现断点调试，这在你debug的时候极其有用（再也不用std::cout了！），你需要在 *.vscode* 目录下新建两个文件，分别是 *launch.json* 与 *tasks.json*：
+至此我们已经把依赖root的代码编写环境搭建完毕了，绝大部分的C++工作与粒子物理实验分析都可以通过这种方式来完成。当然你也完全可以自己在这个基础上集成更多的第三方库（e.g. Pythia8, FastJet, etc.) 以实现更复杂的功能。
+
+下面的内容都是可选项：当遇到很复杂的算法和完全摸不到头脑的BUG时，可以考虑使用断点调试。你需要在 *.vscode* 目录下额外新建两个文件，分别是 *launch.json* 与 *tasks.json*
 
 ```json launch.json
 {
@@ -93,7 +101,7 @@ g++ -std=c++17 main.cc -o main.o `root-config --cflags --libs`
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "MIMode": "lldb",
+            "MIMode": "lldb", // or gdb based on your platform
             "preLaunchTask": "C/C++: g++ build active file"
         }
     ]
@@ -112,16 +120,28 @@ g++ -std=c++17 main.cc -o main.o `root-config --cflags --libs`
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.o",
-                "-std=c++17",
-                "-stdlib=libc++",
-
-                "-I/usr/local/opt/root/include/root/",
-                "-L/usr/local/opt/root/lib/root/",
-                "-lCore", "-lImt", "-lRIO", "-lNet", "-lHist", "-lGraf",
-                "-lGraf3d", "-lGpad", "-lROOTVecOps", "-lTree", "-lTreePlayer",
-                "-lRint", "-lPostscript", "-lMatrix", "-lPhysics", "-lMathCore",
-                "-lThread", "-lMultiProc", "-lROOTDataFrame",
-                "-lpthread", "-lm", "-ldl"
+                "-std=c++17", // -std=c++14 based on your platform
+                "-I/usr/local/opt/root/include/root", // change path to your root include path
+                "-L/usr/local/opt/root/lib/root", // change path to your root lib path
+                "-lCore",
+                "-lImt",
+                "-lRIO",
+                "-lNet",
+                "-lHist",
+                "-lGraf",
+                "-lGpad",
+                "-lROOTVecOps",
+                "-lTree",
+                "-lRint",
+                "-lPostscript",
+                "-lMatrix",
+                "-lPhysics",
+                "-lMathCore",
+                "-lThread",
+                "-pthread",
+                "-lm",
+                "-ldl",
+                "-rdynamic",
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -140,11 +160,11 @@ g++ -std=c++17 main.cc -o main.o `root-config --cflags --libs`
 }
 ```
 
-需要注意root运行库的编译参数其实是很多的，如果你不需要使用root库，那可以把args里从 *"-I/usr/local/opt/root/include/root/"* 开始后面的几行删去，之后打开你的 *main.cc* 文件，尝试在行数上打个断点，点击VSCode左侧面板的运行按钮，就可以直接运行并且Debug代码啦！甚至你可以设置条件断点，例如：
+如果你不需要使用root库，那可以把args里从 *"-I/usr/local/opt/root/include/root/"* 开始后面的几行删去。现在打开你的 *main.cc* 文件，尝试在行数上打个断点，点击VSCode左侧面板的运行按钮，就可以直接运行并且Debug代码啦！甚至你可以设置条件断点，例如：
 
 ![vscode_debug](../vscode_debug.gif)
 
-现在的目录结构如下：
+最终的的目录结构应该是这个样子，它们的作用分别是：
 
 ```
 playground
@@ -159,21 +179,21 @@ playground
 └─── curve.pdf
 ```
 
-大概讲一下这几个文件的作用：
-
 - *c_cpp_properties.json* 这个文件主要是用来配置代码补全与智能提示的，一般而言你只需要配置 *include path* 即可。
 - *tasks.json* 这个文件主要是当你点击VSCode左侧的运行按钮时，其实也是需要编译的，它掌管着编译所需要提供的参数路径等。
 	1. 第一是库的 *include path*，e.g. *-I/path_of_include*
 	2. 第二是库的 *lib path*，e.g. *-L/path_of_lib*
 	3. 第三是告诉 *linker*，e.g. *-lpythia8*
 
+关于如何正确编译 C++ 程序（当你开始好奇编译的参数到底是怎么起作用的），这里有一份推荐阅读的很好的资料 [Things to remember when compiling/linking C/C++ software](https://gist.github.com/gubatron/32f82053596c24b6bec6)
+
 ## Sec. 2 NVim
 
 ![vim_intellisence](../vim_intellisence.gif)
 
-Good news to Vimer! 这部分仅推荐给Vim爱好者使用，一般用户看到这里就可以关掉了。经过我的测试发现，*[NVim](https://github.com/neovim/neovim) + [VimPlug](https://github.com/junegunn/vim-plug) + [coc.nvim](https://github.com/neoclide/coc.nvim) + [ccls](https://github.com/MaskRay/ccls)* 能够获得极好的代码编辑体验！流畅、轻量、稳定，还能结合 *TMux* 来获得本地/服务器上相同的编辑体验。
+Good news to Vimer! 这部分仅推荐给Vim爱好者使用（可选内容）。经过我的测试发现，*[NVim](https://github.com/neovim/neovim) + [VimPlug](https://github.com/junegunn/vim-plug) + [coc.nvim](https://github.com/neoclide/coc.nvim) + [clangd](https://clangd.llvm.org/installation.html)* 能够获得极好的代码编辑体验！流畅、轻量、稳定，结合 *TMux* 可以获得本地/服务器上相同的编辑体验。
 
-这里只说一下MacOS上的安装，Linux用户安装很类似，具体请阅读各部分Github Readme上给出的安装方法。
+这里只说一下MacOS上的安装，Linux用户安装很类似，具体请阅读各部分Github Readme上给出的安装方法（注意下面的命令对于linux并不通用）。
 
 ```bash
 # install nvim
@@ -185,8 +205,6 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 brew install node
 # install yarn, required by coc.nvim
 brew install yarn
-# install ccls
-brew install ccls
 ```
 
 接着就是使用 *vim-plug* 来安装 *coc.nvim*，注意NVim的配置文件是在 *~/.config/nvim/init.vim* 中的。以下是基础的配置，你可以作为参考，我还安装了 *ctrlp* 快速搜索文件插件，与 *gruvbox* 配色。
@@ -216,45 +234,58 @@ set hlsearch
 set mouse=v
 ```
 
-保存完毕以后，在终端打开nvim（输入nvim回车即可，你会看到一些错误信息，别在意，插件安装完毕以后就消失了），输入 *:PlugInstall* 开始安装这些插件与配色。
+保存完毕以后，在终端打开nvim（输入nvim回车即可，你会看到一些错误信息，别在意，插件安装完毕以后就消失了），输入 *:PlugInstall* 开始安装这些插件。
 
-你可以在 [Language-Server](https://github.com/neoclide/coc.nvim/wiki/Language-servers) 中找到支持代码补全和提示的语言，这里我们只考虑C++，所以之前只安装了ccls，其他的语言大家可以根据自己需要酌情安装。再次打开nvim，输入 *:CocConfig*，将以下内容保存好：
+你可以在 [Language-Server](https://github.com/neoclide/coc.nvim/wiki/Language-servers) 中找到支持代码补全和提示的语言，这里我们只考虑C++。再次打开nvim，输入 *:CocConfig*，将以下内容保存好：
 
 ```json
 {
-	"languageserver": {
-		"ccls": {
-			"command": "ccls",
-			"filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
-			"rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
-			"initializationOptions": {
-					"cache": {
-						"directory": "/tmp/ccls"
-					},
-					"clang": {
-						"extraArgs": [
-							"-isystem/usr/local/include",
-							"-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1",
-							"-isystem/Library/Developer/CommandLineTools/usr/lib/clang/12.0.0/include",
-							"-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include",
-							"-isystem/Library/Developer/CommandLineTools/usr/include"
-						]
-					}
-				}
-		}
-	}
+  "languageserver": {
+    "clangd": {
+      "command": "clangd",
+      "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
+      "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"]
+    }
+  }
 }
 ```
 
-需要注意的是，这里的 *"extraArgs"* 仅针对 *MacOS BigSur* 系统，因为标准库的路径在BigSur中被更改了（Linux用户请把extraArgs这段参数删去）。
-
-完成所有的安装和配置以后，让我们回到之前的 *~/Code/clang/playground* 文件夹中（参看上一小节）。新建一个 *.ccls* 文件，它包含了代码补全与智能提示的库包含路径：
+完成所有的安装和配置以后，让我们回到之前的 *~/Code/clang/playground* 文件夹中（参看上一小节）。新建一个 *compile_flags.txt* 文件，它包括了需要引用的头文件和C++版本：
 
 ```plain
-clang
 -std=c++17
--stdlib=libc++
 -I/usr/local/opt/root/include/root
 ```
 
-你现在可以尝试用nvim来编辑文件，例如上一小节中的 *main.cc* 文件，可以有很cooooool的补全和提示。我还没有探索过如何用这一套组合进行编译/Debug，如果你能找到很好的方法请一定要告诉我。
+你现在可以尝试用nvim来编辑文件，例如上一小节中的 *main.cc* 文件，可以有很cooooool的补全和提示，编译与运行则与VSCode相同。
+
+如果你也需要在CERN的LXPLUS上工作，以下是我抽取到的 *compile_flags.txt*，对应 *CMS_Release_10_6_26* （若版本不同可以使用 scram clean && scram b --verbose 来查看并抽取所有的编译需要的头文件）：
+
+```plain
+-xc++
+-std=c++1z
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/cmssw/CMSSW_10_6_26/src
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/include
+
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/coral/CORAL_2_3_21-pafccj7/include/LCG
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/lcg/root/6.14.09-pafccj6/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/pcre/8.37-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/boost/1.67.0-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/bz2lib/1.0.6-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/clhep/2.4.0.0-pafccj2/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/gsl/2.2.1-pafccj2/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/hepmc/2.06.07-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/libuuid/2.22.2-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/openssl/1.0.2d-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/sigcpp/2.6.2-pafccj/include/sigc++-2.0
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/tbb/2019_U3-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/cms/vdt/0.4.0-pafccj2/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/xerces-c/3.1.3-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/xz/5.2.2-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/zlib-x86_64/1.2.11-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/eigen/e4c107b451c52c9ab2d7b7fa4194ee35332916ec-pafccj2/include/eigen3
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/md5/1.0.0-pafccj/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/OpenBLAS/0.3.5-nmpfii2/include
+-I/cvmfs/cms.cern.ch/slc7_amd64_gcc700/external/tinyxml2/6.2.0-pafccj2/include
+```
+
