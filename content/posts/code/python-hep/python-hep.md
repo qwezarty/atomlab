@@ -1,5 +1,5 @@
 ---
-title: "实验学家的Python工具箱"
+title: "实验学家的Python工具箱（附常用依赖库自动化安装）"
 tags: ["code"]
 date: 2022-09-22T11:26:35+08:00
 lastmod: 2022-09-22T12:26:35+08:00
@@ -40,7 +40,7 @@ pyenv global 3.9-dev
 pyenv which python
 ```
 
-注意！不同的系统、不同的ROOT版本，它预编译好的包能使用的Python版本是固定的，你需要使用 *root-config --python3-version* 来查看并安装相应的dev版本。例如：3.9.10则需要安装3.9-dev，而3.8.10则需要安装3.8-dev，以此类推。（dev版本包含了某些库需要的 *#include <Python.h>* 头文件）
+注意！不同的系统和ROOT版本，它预编译好的包使用的Python版本是固定的，你需要使用 *root-config --python3-version* 来查看并安装相应的dev版本。例如：3.9.10则需要安装3.9-dev（macOS），而3.8.10则需要安装3.8-dev（linux），以此类推。（dev版本包含了某些库需要的 *#include <Python.h>* 头文件）
 
 还需要把ROOT的库加入PYTHONPATH，像是这样（添加好了以后重启终端）：
 
@@ -49,7 +49,7 @@ pyenv which python
 echo 'export PYTHONPATH=$(root-config --libdir):$PYTHONPATH' >> ~/.zprofile
 ```
 
-## 如何安装第三方库，e.g. FastJet, Pythia8
+## 如何安装第三方库，e.g. FastJet, Pythia8 （自动化安装）
 
 一个良好的习惯是把所有的第三方库（甚至是不同语言编写的）和软件，安装到 *$HOME/.local* 目录下。一般而言，在你编译的时候都可以附加参数 *./configure --prefix=$HOME/.local*。举例经常会用到的粒子物理软件包来说，你下载好fastjet, lhapdf, pythia8并且解压缩进入目录时，
 
@@ -118,6 +118,81 @@ for ievt in range(1000):
 hist.Draw()
 _ = input("press any key to continue")
 ```
+
+运行完毕以后你会看到类似于这样的分布（强子化跑的比较慢，大概需要1-3分钟取决于你的CPU时钟速度）：
+
+![jetpt_spectrum](../jetpt_spectrum.png)
+
+我整理了部分常用的依赖库自动化安装的Bash脚本，它会在你当前目录下创建一个build文件夹开始下载，安装到 *$HOME/.local* 目录中（版本号截止到2022年，以后不定期更新）。
+
+```bash
+#!/bin/bash
+
+# you need set these environment variables manually in .bash_profile or .zprofile
+# you should also set up a python3.9-dev (or python3.8-dev) version by pyenv or anaconda
+# export PATH="$HOME/.local/bin:$PATH"
+# export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
+# export PYTHONPATH=$HOME/.local/lib:$PYTHONPATH
+
+if [[ ${PWD##*/} != "OfflineExamples" ]]; then
+    echo "You need to cd to QCDAnalysis/OfflineExamples before run this script."
+    exit 1;
+fi
+[[ ! -d build ]] && mkdir build
+cd build
+build_dir=${PWD}
+prefix=$HOME/.local
+
+echo "Checking fastjet......"
+version="fastjet-3.4.0"
+cd $build_dir
+curl -o $version.tar.gz http://fastjet.fr/repo/$version.tar.gz
+tar -xzf $version.tar.gz
+cd $version
+./configure PYTHON=$(which python3) --prefix=$prefix --enable-pyext --enable-allcxxplugins
+make -j 8
+make install
+
+echo "Checking fjcore......"
+version="fjcore-3.4.0"
+cd $build_dir
+curl -o $version.tar.gz http://fastjet.fr/repo/$version.tar.gz
+tar -xzf $version.tar.gz
+mv $version $prefix/include/fjcore
+
+echo "Checking lhapdf......"
+version="LHAPDF-6.4.0"
+cd $build_dir
+curl -o $version.tar.gz https://lhapdf.hepforge.org/downloads/?f=$version.tar.gz
+tar -xzf $version.tar.gz
+cd $version
+./configure PYTHON=$(which python3) --prefix=$prefix
+make -j 8
+make install
+
+echo "Checking pythia8......"
+version="pythia8306"
+cd $build_dir
+curl -o $version.tgz https://pythia.org/download/pythia83/$version.tgz
+tar -xzf $version.tgz
+cd $version
+./configure --prefix=$prefix --with-lhapdf6=$prefix --with-fastjet3=$prefix --with-python-config=$(which python3-config)
+make -j 8
+make install
+
+echo "Checking MG5_aMC@NLO......"
+version="MG5_aMC_v3.4.1"
+cd $build_dir
+wget https://launchpad.net/mg5amcnlo/3.0/3.4.x/+download/$version.tar.gz
+tar -xzf $version.tar.gz --one-top-level # extract and create dir named with tarball basename
+mv $version/$(ls $version)/* $version/
+if [[ ! -d $HOME/.local/opt ]]; then mkdir -p $HOME/.local/opt; fi
+cp -r $version $HOME/.local/opt
+ln -s $HOME/.local/opt/$version/bin/mg5_aMC $HOME/.local/bin/mg5_aMC
+# disable auto-update
+echo 'auto_update = 0' >> $HOME/.local/opt/$version/input/mg5_configuration.txt
+```
+
 
 ## 配置代码补全和提示（VSCode and NVIM）
 
