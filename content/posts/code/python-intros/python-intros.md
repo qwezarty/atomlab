@@ -14,7 +14,7 @@ draft: false
 
 ~~题外话的题外话：对于大型项目使用Jupyter是一场灾难。~~
 
-## 我使用Windows系统
+## 使用Windows系统
 
 前往[Python.org](https://www.python.org/downloads/windows/)选择 *Latest Python 3 Release* 拉到最底下选择 *Windows Installer* 下载并安装，这里建议安装到默认的路径即可。
 
