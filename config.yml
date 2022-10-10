@@ -7,7 +7,7 @@ enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false
 buildExpired: false
-Copyright: "&copy 2018 - 2021"
+Copyright: "&copy 2018 - 2022"
 
 # googleAnalytics: UA-123-45
 
