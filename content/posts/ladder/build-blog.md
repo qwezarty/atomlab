@@ -12,7 +12,8 @@ draft: false
 
 * 使用Hugo生成静态博客
 * 利用Caddy将博客通过HTTPS伺服起来
-* 文章已经在第一版（2018）的基础上经过多次修订，现在配置更为简单（2020）
+* 文章已经在第一版（2018）的基础上经过多次修订，现在配置更为简单（2020, CaddyV2）
+* 在2023年进行了更新，现在使用XRay的XTLS来加速访问
 * 归档部分若无特殊需要请跳过，在未来我会移除它（暂时保留以供有些同学升级时作为参考）
 
 ### 在开始之前，请确保
@@ -85,8 +86,9 @@ hugo -D
 
 ```bash
 # 添加caddy软件包地址
-echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" \
-    | sudo tee -a /etc/apt/sources.list.d/caddy-fury.list
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 # 更新软件包列表
 sudo apt update
 # 安装
@@ -112,11 +114,11 @@ file_server # 你需要指定以上目录，将caddy作为一个静态伺服器
 
 * 域名和tls的拥有者邮箱请改成自己的（会用这个邮箱申请证书）
 * root目录要指向到站点生成下的public文件夹
-* 若是你在短时间内过多次申请了证书（比如申请成功了证书，又多次摧毁了服务器重新建，那么你很可能会遇到免费的HTTPS证书申请不下来的情况，毕竟人家不是做慈善的，需要等待一段时间再试，详情请看 [Rate Limits](https://letsencrypt.org/docs/rate-limits/)）
+* 若是你在短时间内过多次申请了证书（比如申请成功了证书，又多次摧毁了服务器重新建，那么你很可能会遇到免费的HTTPS证书申请不下来的情况，需要等待一段时间再试，详情请看 [Rate Limits](https://letsencrypt.org/docs/rate-limits/)）
 
 ## 写在最后
 
-到这里，应该能够通过你的域名访问到博客了，请测试一下，不行的话主要看下域名解析和caddy的配置是否有错误，下一篇的内容是喜闻乐见的搭建V2Ray!
+到这里，应该能够通过你的域名访问到博客了，请测试一下，不行的话主要看下域名解析和caddy的配置是否有错误，下一篇的内容是喜闻乐见的搭建XRay!
 
 ---
 ---
