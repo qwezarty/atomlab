@@ -193,7 +193,7 @@ playground
 
 Good news to Vimer! 这部分仅推荐给Vim爱好者使用（可选内容）。经过我的测试发现，*[NVim](https://github.com/neovim/neovim) + [VimPlug](https://github.com/junegunn/vim-plug) + [coc.nvim](https://github.com/neoclide/coc.nvim) + [clangd](https://clangd.llvm.org/installation.html)* 能够获得极好的代码编辑体验！流畅、轻量、稳定，结合 *TMux* 可以获得本地/服务器上相同的编辑体验。
 
-这里只说一下MacOS上的安装，Linux用户安装很类似，具体请阅读各部分Github Readme上给出的安装方法（注意下面的命令对于linux并不通用）。
+这里只说一下MacOS上的安装，Linux用户推荐使用包管理器（如果没有权限就appimage版本然后创建软连接），具体请阅读各部分Github Readme上给出的安装方法（注意下面的命令对于linux并不通用）。
 
 ```bash
 # install nvim
@@ -222,16 +222,47 @@ syntax enable
 set background=dark
 colorscheme gruvbox
 
-set autoindent
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set fileformat=unix
-
 set nu
 set cursorline
 set hlsearch 
 set mouse=v
+
+" default indent
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set fileformat=unix
+set autoindent
+set expandtab
+
+" indent for python
+au BufNewFile,BufRead *.py
+  \ set tabstop=4 |
+  \ set softtabstop=4 |
+  \ set shiftwidth=4 |
+  \ set textwidth=79 |
+  \ set expandtab |
+  \ set autoindent |
+  \ set fileformat=unix |
+
+" ignore files and directories
+set wildignore+=*.so,*.swp,*.pyc,*.zip,*.tar.gz,*.o,*.out,*.lo,*.la
+set wildignore+=*/tmp/*,*/bin/*,*/obj/*,*/packages/*,*/node_modules/*,*/.git/*,*/build/*
+set wildignore+=*/logs/*,*/data/*
+
+" coc.nvim
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Using tab completion
+inoremap <silent><expr> <tab> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<TAB>"
+inoremap <silent><expr> <cr> "\<c-g>u\<CR>"
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 ```
 
 保存完毕以后，在终端打开nvim（输入nvim回车即可，你会看到一些错误信息，别在意，插件安装完毕以后就消失了），输入 *:PlugInstall* 开始安装这些插件。
