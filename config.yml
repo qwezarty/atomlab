@@ -28,10 +28,9 @@ params:
     disableThemeToggle: false
 
     ShowReadingTime: true
-    ShowShareButtons: true
     ShowPostNavLinks: true
     ShowBreadCrumbs: false
-    ShowShareButtons: true
+    ShowShareButtons: false
     disableSpecial1stPost: false
     disableScrollToTop: false
     comments: false
