@@ -7,7 +7,7 @@ enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false
 buildExpired: false
-Copyright: "&copy 2018 - 2022"
+Copyright: "Copyright (c) 2021-2024 Atomlab"
 
 # googleAnalytics: UA-123-45
 
@@ -19,10 +19,10 @@ params:
     env: production # to enable google analytics, opengraph, twitter-cards and schema.
     title: Atomlab
     description: "Blogs about physics and computer science."
-    keywords: [Blog, Physics, Programming, Portfolio]
+    keywords: [Blog, Academic, Programming, Portfolio]
     author: Bruce Yip
     # author: ["Me", "You"] # multiple authors
-    images: ["http://localhost:1313/home.jpg"]
+    images: ["/multijet.jpg"]
     DateFormat: "January 2, 2006"
     defaultTheme: auto # dark, light
     disableThemeToggle: false
@@ -49,10 +49,10 @@ params:
     profileMode:
         enabled: false # needs to be explicitly set
         title: Bruce Yip
-        subtitle: "Physicist, Programmer, Engineer"
-        imageUrl: "http://localhost:1313/home.jpg"
-        imageWidth: 120
-        imageHeight: 120
+        subtitle: "Physicist, Researcher, Programmer, Engineer"
+        imageUrl: "/avatar.jpg"
+        imageWidth: 240
+        imageHeight: 240
         imageTitle: Bruce Yip
         buttons:
             - name: Posts
@@ -69,10 +69,12 @@ params:
             - ---R. P. Feynman
 
     socialIcons:
+        # - name: linkedin 
+        #   url: "https://linkedin.com/in/yulei-ye/"
         - name: email
           url: "mailto: qwezarty@gmail.com"
-        - name: twitter
-          url: "https://twitter.com/qwezarty"
+        # - name: twitter
+        #   url: "https://twitter.com/qwezarty"
         - name: github
           url: "https://github.com/qwezarty"
 
